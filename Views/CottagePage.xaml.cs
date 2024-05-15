@@ -19,26 +19,70 @@ namespace MokinVarausApp
 
         private void OnAddCottageClicked(object sender, EventArgs e)
         {
-            var newCottage = new Cottage
+            try
             {
-                Id = _cottages.Count + 1,
-                Name = CottageNameEntry.Text,
-                Description = CottageDescriptionEntry.Text,
-                Price = decimal.Parse(CottagePriceEntry.Text),
-                AreaId = int.Parse(CottageAreaIdEntry.Text)
-            };
+                if (string.IsNullOrWhiteSpace(CottageNameEntry.Text) ||
+                    string.IsNullOrWhiteSpace(CottageDescriptionEntry.Text) ||
+                    string.IsNullOrWhiteSpace(CottagePriceEntry.Text) ||
+                    string.IsNullOrWhiteSpace(CottageAreaIdEntry.Text))
+                {
+                    DisplayAlert("Error", "Please fill in all fields.", "OK");
+                    return;
+                }
 
-            _dataService.AddCottage(newCottage);
-            _cottages.Add(newCottage);
-            CottageNameEntry.Text = string.Empty;
-            CottageDescriptionEntry.Text = string.Empty;
-            CottagePriceEntry.Text = string.Empty;
-            CottageAreaIdEntry.Text = string.Empty;
+                if (!decimal.TryParse(CottagePriceEntry.Text, out decimal price) || price <= 0)
+                {
+                    DisplayAlert("Error", "Please enter a valid positive price.", "OK");
+                    return;
+                }
+
+                if (!int.TryParse(CottageAreaIdEntry.Text, out int areaId) || areaId <= 0)
+                {
+                    DisplayAlert("Error", "Please enter a valid positive area ID.", "OK");
+                    return;
+                }
+
+                var newCottage = new Cottage
+                {
+                    Id = _cottages.Count + 1,
+                    Name = CottageNameEntry.Text,
+                    Description = CottageDescriptionEntry.Text,
+                    Price = price,
+                    AreaId = areaId
+                };
+
+                _dataService.AddCottage(newCottage);
+                _cottages.Add(newCottage);
+                CottageNameEntry.Text = string.Empty;
+                CottageDescriptionEntry.Text = string.Empty;
+                CottagePriceEntry.Text = string.Empty;
+                CottageAreaIdEntry.Text = string.Empty;
+
+                DisplayAlert("Success", "Cottage added successfully.", "OK");
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
         }
 
         private void OnEditCottageClicked(object sender, EventArgs e)
         {
-            // Implement edit functionality
+            var button = sender as Button;
+            var item = button.BindingContext as Cottage;
+
+            // Create a copy of the item to edit
+            var editedItem = new Cottage
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                Price = item.Price,
+                AreaId = item.AreaId
+            };
+
+            // Navigate to the edit page passing the item to edit
+            //await Navigation.PushAsync(new EditPage(editedItem));
         }
 
         private void OnDeleteCottageClicked(object sender, EventArgs e)

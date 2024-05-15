@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maui.Controls;
 using MokinVarausApp.Models;
 using MokinVarausApp.Services;
+using MokinVarausApp.Views;
 using System;
 using System.Collections.ObjectModel;
 
@@ -8,44 +9,33 @@ namespace MokinVarausApp
 {
     public partial class MainPage : ContentPage
     {
-        private DataService _dataService;
-        private ObservableCollection<Area> _areas;
-
         public MainPage()
         {
             InitializeComponent();
-            _dataService = new DataService();
-            _areas = new ObservableCollection<Area>(_dataService.GetAreas());
-            AreasCollectionView.ItemsSource = _areas;
         }
 
-        private void OnAddAreaClicked(object sender, EventArgs e)
+        private void OnAreaPageClicked(object sender, EventArgs e)
         {
-            var newArea = new Area
-            {
-                Id = _areas.Count + 1,
-                Name = AreaNameEntry.Text,
-                Description = AreaDescriptionEntry.Text
-            };
-
-            _dataService.AddArea(newArea);
-            _areas.Add(newArea);
-            AreaNameEntry.Text = string.Empty;
-            AreaDescriptionEntry.Text = string.Empty;
+            // Navigate to AreaPage
+            Navigation.PushAsync(new AreaPage());
         }
 
-        private void OnEditAreaClicked(object sender, EventArgs e)
+        private void OnCottagePageClicked(object sender, EventArgs e)
         {
-            // Implement edit functionality
+            // Navigate to CottagePage
+            Navigation.PushAsync(new CottagePage());
         }
 
-        private void OnDeleteAreaClicked(object sender, EventArgs e)
+        private void OnRentPageClicked(object sender, EventArgs e)
         {
-            var button = sender as Button;
-            var area = button.BindingContext as Area;
+            // Navigate to RentPage
+            Navigation.PushAsync(new RentPage());
+        }
 
-            _dataService.RemoveArea(area.Id);
-            _areas.Remove(area);
+        private void OnCalendarPageClicked(object sender, EventArgs e)
+        {
+            // Navigate to CalendarPage
+            Navigation.PushAsync(new CalendarPage());
         }
     }
 }

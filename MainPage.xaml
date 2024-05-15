@@ -1,26 +1,16 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MokinVarausApp.MainPage">
+             x:Class="MokinVarausApp.MainPage"
+             Title="Mökkimonster 3200">
 
-    <StackLayout Padding="20">
-        <Label Text="Area Management" 
-               FontSize="24"
-               HorizontalOptions="Center" />
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Label Text="Welcome to Cottage Rental" FontSize="Large" HorizontalOptions="Center" Margin="0,0,0,30"/>
 
-        <Entry x:Name="AreaNameEntry" Placeholder="Area Name" />
-        <Entry x:Name="AreaDescriptionEntry" Placeholder="Area Description" />
-        <Button Text="Add Area" Clicked="OnAddAreaClicked" />
-
-        <CollectionView x:Name="AreasCollectionView">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Name}" FontSize="18" />
-                        <Button Text="Edit" Clicked="OnEditAreaClicked" />
-                        <Button Text="Delete" Clicked="OnDeleteAreaClicked" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <Button Text="Explore the Area" Clicked="OnAreaPageClicked" Margin="0,0,0,10"/>
+        <Button Text="View Cottages" Clicked="OnCottagePageClicked" Margin="0,0,0,10"/>
+        <Button Text="Rent a Cottage" Clicked="OnRentPageClicked" Margin="0,0,0,10"/>
+        <Button Text="Check Availability" Clicked="OnCalendarPageClicked" Margin="0,0,0,10"/>
     </StackLayout>
+
 </ContentPage>

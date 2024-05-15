@@ -1,4 +1,5 @@
-﻿using MokinVarausApp.Models;
+﻿using Microsoft.Maui.Controls;
+using MokinVarausApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,24 @@ namespace MokinVarausApp.Services
             _areas = new List<Area>();
             _cottages = new List<Cottage>();
         }
+        private async void OnEditClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var item = button.BindingContext as Cottage;
+
+            // Create a copy of the item to edit
+            var editedItem = new Cottage
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                Price = item.Price,
+                AreaId = item.AreaId
+            };
+
+            // Navigate to the edit page passing the item to edit <---- KÄYTÄ TÄTÄ TOISELLA PUOLELLA JOS EI TOIMI (EDIT PAGE)
+            //await Navigation.PushAsync(new EditPage(editedItem));
+        }
 
         // Area methods
         public void AddArea(Area area)
@@ -23,7 +42,7 @@ namespace MokinVarausApp.Services
 
         public void RemoveArea(int areaId)
         {
-            var area = _areas.FirstOrDefault(a => a.Id == areaId);
+            var area = _areas.FirstOrDefault(a => a.alue_Id == areaId);
             if (area != null)
             {
                 _areas.Remove(area);
@@ -32,11 +51,10 @@ namespace MokinVarausApp.Services
 
         public void UpdateArea(Area updatedArea)
         {
-            var area = _areas.FirstOrDefault(a => a.Id == updatedArea.Id);
+            var area = _areas.FirstOrDefault(a => a.alue_Id == updatedArea.alue_Id);
             if (area != null)
             {
-                area.Name = updatedArea.Name;
-                area.Description = updatedArea.Description;
+                area.nimi = updatedArea.nimi;
             }
         }
 

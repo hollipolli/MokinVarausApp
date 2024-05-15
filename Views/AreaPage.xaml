@@ -1,0 +1,26 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MokinVarausApp.AreaPage">
+
+    <StackLayout Padding="20">
+        <Label Text="Area Management" 
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <Entry x:Name="AreaNameEntry" Placeholder="Area Name" />
+        <Entry x:Name="AreaDescriptionEntry" Placeholder="Area Description" />
+        <Button Text="Add Area" Clicked="OnAddAreaClicked" />
+
+        <CollectionView x:Name="AreasCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}" FontSize="18" />
+                        <Button Text="Edit" Clicked="OnEditAreaClicked" />
+                        <Button Text="Delete" Clicked="OnDeleteAreaClicked" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
