@@ -1,28 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MokinVarausApp.CottagePage">
+             x:Class="MokinVarausApp.CottagePage"
+             Title="Cottages">
 
-    <StackLayout Padding="20">
-        <Label Text="Cottage Management" 
-               FontSize="24"
-               HorizontalOptions="Center" />
+    <StackLayout Padding="10">
 
-        <Entry x:Name="CottageNameEntry" Placeholder="Cottage Name" />
-        <Entry x:Name="CottageDescriptionEntry" Placeholder="Cottage Description" />
-        <Entry x:Name="CottagePriceEntry" Placeholder="Cottage Price" Keyboard="Numeric" />
-        <Entry x:Name="CottageAreaIdEntry" Placeholder="Area ID" Keyboard="Numeric" />
-        <Button Text="Add Cottage" Clicked="OnAddCottageClicked" />
-
-        <CollectionView x:Name="CottagesCollectionView">
+        <!-- Cottage Collection View -->
+        <CollectionView x:Name="CottagesCollectionView"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCottageSelected">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Name}" FontSize="18" />
-                        <Button Text="Edit" Clicked="OnEditCottageClicked" />
-                        <Button Text="Delete" Clicked="OnDeleteCottageClicked" />
+                    <StackLayout Padding="10" BackgroundColor="#f0f0f0" Margin="0,0,0,5">
+                        <Label Text="{Binding Name}" FontSize="Large"/>
+                        <Label Text="{Binding Description}" FontSize="Medium" LineBreakMode="WordWrap"/>
+                        <Label Text="{Binding Price, StringFormat='Price: {0:C}'}" FontSize="Medium"/>
+                        <Label Text="{Binding AreaId, StringFormat='Area ID: {0}'}" FontSize="Medium"/>
+                        <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Text="Edit" Clicked="OnEditCottageClicked" Margin="0,0,10,0"/>
+                            <Button Text="Delete" Clicked="OnDeleteCottageClicked"/>
+                        </StackLayout>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <!-- Add Cottage Section -->
+        <StackLayout Margin="0,20,0,0">
+            <Label Text="Add New Cottage" FontSize="Large" HorizontalOptions="Center"/>
+            <Entry x:Name="CottageNameEntry" Placeholder="Name" Margin="0,5"/>
+            <Entry x:Name="CottageDescriptionEntry" Placeholder="Description" Margin="0,5"/>
+            <Entry x:Name="CottagePriceEntry" Placeholder="Price" Keyboard="Numeric" Margin="0,5"/>
+            <Entry x:Name="CottageAreaIdEntry" Placeholder="Area ID" Keyboard="Numeric" Margin="0,5"/>
+            <Button Text="Add Cottage" Clicked="OnAddCottageClicked" Margin="0,10"/>
+        </StackLayout>
+
+        <!-- Edit Cottage Section -->
+        <StackLayout x:Name="EditCottageSection" IsVisible="False" Margin="0,20,0,0">
+            <Label Text="Edit Cottage" FontSize="Large" HorizontalOptions="Center"/>
+            <Entry x:Name="EditCottageNameEntry" Placeholder="Name" Margin="0,5"/>
+            <Entry x:Name="EditCottageDescriptionEntry" Placeholder="Description" Margin="0,5"/>
+            <Entry x:Name="EditCottagePriceEntry" Placeholder="Price" Keyboard="Numeric" Margin="0,5"/>
+            <Entry x:Name="EditCottageAreaIdEntry" Placeholder="Area ID" Keyboard="Numeric" Margin="0,5"/>
+            <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
+                <Button x:Name="SaveButton" Text="Save" Clicked="OnSaveClicked"/>
+                <Button x:Name="CancelButton" Text="Cancel" Clicked="OnCancelClicked" Margin="10,0,0,0"/>
+            </StackLayout>
+        </StackLayout>
+
     </StackLayout>
+
 </ContentPage>
