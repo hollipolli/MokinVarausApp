@@ -1,0 +1,28 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MokinVarausApp.CottagePage">
+
+    <StackLayout Padding="20">
+        <Label Text="Cottage Management" 
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <Entry x:Name="CottageNameEntry" Placeholder="Cottage Name" />
+        <Entry x:Name="CottageDescriptionEntry" Placeholder="Cottage Description" />
+        <Entry x:Name="CottagePriceEntry" Placeholder="Cottage Price" Keyboard="Numeric" />
+        <Entry x:Name="CottageAreaIdEntry" Placeholder="Area ID" Keyboard="Numeric" />
+        <Button Text="Add Cottage" Clicked="OnAddCottageClicked" />
+
+        <CollectionView x:Name="CottagesCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}" FontSize="18" />
+                        <Button Text="Edit" Clicked="OnEditCottageClicked" />
+                        <Button Text="Delete" Clicked="OnDeleteCottageClicked" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
