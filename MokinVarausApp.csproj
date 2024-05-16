@@ -53,6 +53,8 @@
 		<PackageReference Include="SQLite" Version="3.13.0" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
 		<PackageReference Include="MySqlConnector" Version="2.2.5" />
+		<PackageReference Include="Syncfusion.Maui.Calendar" Version="25.2.4" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.2.4" />
 	</ItemGroup>
 
 	<ItemGroup>
