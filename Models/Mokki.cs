@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MokinVarausApp.Models
 {
-    public class Mokki
+    public class Cottage
     {
         public int Id { get; set; }
         public string Name { get; set; }
