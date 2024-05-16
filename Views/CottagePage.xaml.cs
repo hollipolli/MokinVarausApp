@@ -69,20 +69,16 @@ namespace MokinVarausApp
         private void OnEditCottageClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
-            var item = button.BindingContext as Cottage;
+            var cottage = button.BindingContext as Cottage;
 
-            // Create a copy of the item to edit
-            var editedItem = new Cottage
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Description = item.Description,
-                Price = item.Price,
-                AreaId = item.AreaId
-            };
+            // Populate the edit controls with cottage details
+            EditCottageNameEntry.Text = cottage.Name;
+            EditCottageDescriptionEntry.Text = cottage.Description;
+            EditCottagePriceEntry.Text = cottage.Price.ToString();
+            EditCottageAreaIdEntry.Text = cottage.AreaId.ToString();
 
-            // Navigate to the edit page passing the item to edit
-            //await Navigation.PushAsync(new EditPage(editedItem));
+            // Show the edit controls and hide the add controls
+            EditCottageSection.IsVisible = true;
         }
 
         private void OnDeleteCottageClicked(object sender, EventArgs e)
@@ -92,6 +88,34 @@ namespace MokinVarausApp
 
             _dataService.RemoveCottage(cottage.Id);
             _cottages.Remove(cottage);
+        }
+        private void OnSaveButtonClicked(object sender, EventArgs e)
+        {
+            if (CottagesCollectionView.SelectedItem != null)
+            {
+                // Update the cottage details
+                var editedCottage = CottagesCollectionView.SelectedItem as Cottage;
+                editedCottage.Name = EditCottageNameEntry.Text;
+                editedCottage.Description = EditCottageDescriptionEntry.Text;
+                editedCottage.Price = decimal.Parse(EditCottagePriceEntry.Text);
+                editedCottage.AreaId = int.Parse(EditCottageAreaIdEntry.Text);
+
+                
+
+                // Hide the edit controls
+                EditCottageSection.IsVisible = false;
+            }
+            else
+            {
+                // Inform the user to select a cottage before saving
+                DisplayAlert("Error", "Please select a cottage to edit.", "OK");
+            }
+        }
+
+        private void OnCancelButtonClicked(object sender, EventArgs e)
+        {
+            // Hide the edit controls
+            EditCottageSection.IsVisible = false;
         }
     }
 }
