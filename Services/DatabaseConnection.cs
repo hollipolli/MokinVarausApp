@@ -2,10 +2,10 @@
 public class DatabaseConnector
 {
     private readonly string server = "localhost";
-    private readonly string port = "3307";
+    private readonly string port = "3306";
     private readonly string uid = "root";
-    private readonly string pwd = "Ruutti";
-    private readonly string database = "hovi";
+    private readonly string pwd = "root";
+    private readonly string database = "OmaDB";
     public DatabaseConnector()
     {
     }

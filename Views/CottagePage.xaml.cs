@@ -1,19 +1,59 @@
 using MokinVarausApp.Models;
-using MokinVarausApp.Services;
+using MySqlConnector;
+using System;
 using System.Collections.ObjectModel;
 
 namespace MokinVarausApp
 {
     public partial class CottagePage : ContentPage
     {
-        private DataService _dataService;
+        private DatabaseConnector _dbConnector;
         private ObservableCollection<Cottage> _cottages;
 
         public CottagePage()
         {
             InitializeComponent();
-            _dataService = new DataService();
-            _cottages = new ObservableCollection<Cottage>(_dataService.GetCottages());
+            _dbConnector = new DatabaseConnector();
+            LoadCottagesFromDatabase();
+        }
+        private async void OnDatabaseClicked(object sender, EventArgs e)
+        {
+            DatabaseConnector dbc = new DatabaseConnector();
+            try
+            {
+                var conn = dbc._getConnection();
+                conn.Open();
+                await DisplayAlert("Onnistui", "Tietokanta yhteys aukesi", "OK");
+            }
+            catch (MySqlException ex)
+            {
+                await DisplayAlert("Failure", ex.Message, "OK");
+            }
+        }
+
+        private void LoadCottagesFromDatabase()
+        {
+            _cottages = new ObservableCollection<Cottage>();
+            using (var connection = _dbConnector._getConnection())
+            {
+                connection.Open();
+                var query = "SELECT * FROM mokki";
+                using (var cmd = new MySqlCommand(query, connection))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        _cottages.Add(new Cottage
+                        {
+                            Id = reader.GetInt32("mokki_id"),
+                            Name = reader.GetString("mokkinimi"),
+                            Description = reader.GetString("kuvaus"),
+                            Price = reader.GetDecimal("hinta"),
+                            AreaId = reader.GetInt32("alue_id")
+                        });
+                    }
+                }
+            }
             CottagesCollectionView.ItemsSource = _cottages;
         }
 
@@ -21,44 +61,7 @@ namespace MokinVarausApp
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(CottageNameEntry.Text) ||
-                    string.IsNullOrWhiteSpace(CottageDescriptionEntry.Text) ||
-                    string.IsNullOrWhiteSpace(CottagePriceEntry.Text) ||
-                    string.IsNullOrWhiteSpace(CottageAreaIdEntry.Text))
-                {
-                    DisplayAlert("Error", "Please fill in all fields.", "OK");
-                    return;
-                }
-
-                if (!decimal.TryParse(CottagePriceEntry.Text, out decimal price) || price <= 0)
-                {
-                    DisplayAlert("Error", "Please enter a valid positive price.", "OK");
-                    return;
-                }
-
-                if (!int.TryParse(CottageAreaIdEntry.Text, out int areaId) || areaId <= 0)
-                {
-                    DisplayAlert("Error", "Please enter a valid positive area ID.", "OK");
-                    return;
-                }
-
-                var newCottage = new Cottage
-                {
-                    Id = _cottages.Count + 1,
-                    Name = CottageNameEntry.Text,
-                    Description = CottageDescriptionEntry.Text,
-                    Price = price,
-                    AreaId = areaId
-                };
-
-                _dataService.AddCottage(newCottage);
-                _cottages.Add(newCottage);
-                CottageNameEntry.Text = string.Empty;
-                CottageDescriptionEntry.Text = string.Empty;
-                CottagePriceEntry.Text = string.Empty;
-                CottageAreaIdEntry.Text = string.Empty;
-
-                DisplayAlert("Success", "Cottage added successfully.", "OK");
+                // Add your code to insert a new cottage into the database
             }
             catch (Exception ex)
             {
@@ -68,54 +71,12 @@ namespace MokinVarausApp
 
         private void OnEditCottageClicked(object sender, EventArgs e)
         {
-            var button = sender as Button;
-            var cottage = button.BindingContext as Cottage;
-
-            // Populate the edit controls with cottage details
-            EditCottageNameEntry.Text = cottage.Name;
-            EditCottageDescriptionEntry.Text = cottage.Description;
-            EditCottagePriceEntry.Text = cottage.Price.ToString();
-            EditCottageAreaIdEntry.Text = cottage.AreaId.ToString();
-
-            // Show the edit controls and hide the add controls
-            EditCottageSection.IsVisible = true;
+            // Add your code to handle editing a cottage
         }
 
         private void OnDeleteCottageClicked(object sender, EventArgs e)
         {
-            var button = sender as Button;
-            var cottage = button.BindingContext as Cottage;
-
-            _dataService.RemoveCottage(cottage.Id);
-            _cottages.Remove(cottage);
-        }
-        private void OnSaveButtonClicked(object sender, EventArgs e)
-        {
-            if (CottagesCollectionView.SelectedItem != null)
-            {
-                // Update the cottage details
-                var editedCottage = CottagesCollectionView.SelectedItem as Cottage;
-                editedCottage.Name = EditCottageNameEntry.Text;
-                editedCottage.Description = EditCottageDescriptionEntry.Text;
-                editedCottage.Price = decimal.Parse(EditCottagePriceEntry.Text);
-                editedCottage.AreaId = int.Parse(EditCottageAreaIdEntry.Text);
-
-                
-
-                // Hide the edit controls
-                EditCottageSection.IsVisible = false;
-            }
-            else
-            {
-                // Inform the user to select a cottage before saving
-                DisplayAlert("Error", "Please select a cottage to edit.", "OK");
-            }
-        }
-
-        private void OnCancelButtonClicked(object sender, EventArgs e)
-        {
-            // Hide the edit controls
-            EditCottageSection.IsVisible = false;
+            // Add your code to delete a cottage from the database
         }
     }
 }
