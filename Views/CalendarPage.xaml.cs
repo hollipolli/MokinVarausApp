@@ -11,10 +11,13 @@ namespace MokinVarausApp.Views
     {
         public CalendarPage()
         {
+            SfCalendar calendar = new SfCalendar();
+            this.Content = calendar;
+
             InitializeComponent();
             LoadCalendar();
         }
-
+        //vittu m‰ ostan viinaa eti t‰‰‰‰‰‰‰f adsigjfhknldsjklfgdskhjlfdsbhjnklfdskjnfdsnjk.lfdskljfdskljnfdwjklkmjlfdskmjfdsjkfdsjkfdsjkhfjkdskjfdsjkdfsjk
         private async void LoadCalendar()
         {
             var reservations = await GetReservationsAsync();
